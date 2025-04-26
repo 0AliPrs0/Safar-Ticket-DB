@@ -5,4 +5,3 @@ CREATE TABLE TrainDetail (
 	facilities JSON,
 	FOREIGN KEY (train_id) REFERENCES VehicleDetail(vehicle_id) ON DELETE CASCADE
 );
-   
