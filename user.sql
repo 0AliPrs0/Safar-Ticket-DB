@@ -13,3 +13,14 @@ CREATE TABLE User (
     CHECK (email REGEXP '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$' OR email IS NULL),
     CHECK (phone_number REGEXP '^[0-9]{10,15}$' OR phone_number IS NULL)
 );
+
+ALTER TABLE User
+    DROP COLUMN city;
+
+ALTER TABLE User
+    ADD COLUMN city_id BIGINT NOT NULL;
+    
+ALTER TABLE User
+    ADD CONSTRAINT fk_city
+        FOREIGN KEY (city_id) REFERENCES City(city_id)
+        ON DELETE CASCADE;
