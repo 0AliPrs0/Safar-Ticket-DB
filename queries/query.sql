@@ -89,3 +89,43 @@ WHERE user_id = (
     ) AS max_user
 );
 --------------------------------------------------------------
+--19)
+DELETE t
+FROM ticket t
+JOIN reservation r ON r.ticket_id = t.ticket_id
+JOIN ReservationChange rc ON rc.reservation_id = r.reservation_id
+JOIN User u ON r.user_id = u.user_id
+WHERE u.last_name = 'Redington' AND rc.next_status = 'canceled';
+--------------------------------------------------------------
+--20)
+DELETE t
+FROM Ticket t
+JOIN Reservation r ON r.ticket_id = t.ticket_id
+WHERE r.status = 'canceled';
+--------------------------------------------------------------
+--21)
+UPDATE Travel
+JOIN (
+    SELECT DISTINCT tr.travel_id
+    FROM Travel tr
+    JOIN Ticket t ON t.travel_id = tr.travel_id
+    JOIN Reservation r ON r.ticket_id = t.ticket_id
+    JOIN TransportCompany tc ON tr.transport_company_id = tc.transport_company_id
+    WHERE tc.company_name = 'Mahan Air'
+      AND r.reservation_time < CURDATE()
+      AND r.reservation_time >= DATE_SUB(CURDATE(), INTERVAL 1 DAY)
+) AS sub ON Travel.travel_id = sub.travel_id
+SET Travel.price = Travel.price * 0.9;
+--------------------------------------------------------------
+--22)
+SELECT r.report_category, COUNT(*) AS report_count
+FROM Report r
+WHERE r.ticket_id = (
+    SELECT ticket_id
+    FROM Report
+    GROUP BY ticket_id
+    ORDER BY COUNT(*) DESC
+    LIMIT 1
+)
+GROUP BY r.report_category;
+--------------------------------------------------------------
