@@ -33,6 +33,41 @@ WHERE r.status = 'paid'
 GROUP BY u.user_id, c.city_id
 HAVING COUNT(r.user_id) = 1;
 ---------------------------------------------------------------
+--5)
+SELECT u.first_name, u.last_name, u.email
+FROM user u
+JOIN reservation r ON u.user_id = r.user_id
+WHERE r.status = 'paid'
+ORDER BY r.reservation_time DESC
+LIMIT 1;
+---------------------------------------------------------------
+--6)
+SELECT u.email
+FROM user u
+JOIN payment p ON u.user_id = p.user_id
+GROUP BY p.payment_id
+HAVING SUM(p.amount) > (SELECT AVG(p.amount) FROM payment p);
+---------------------------------------------------------------
+--7)
+SELECT 
+    tr.transport_type, 
+    COUNT(r.ticket_id) AS number_of_tickets
+FROM ticket t
+JOIN travel tr ON t.travel_id = tr.travel_id
+JOIN reservation r ON r.ticket_id = t.ticket_id
+WHERE r.status = 'paid'
+GROUP BY tr.transport_type
+ORDER BY number_of_tickets DESC;
+---------------------------------------------------------------
+--8)
+SELECT CONCAT(first_name, ' ', last_name) AS name, count(r.user_id) AS number_of_reserve
+FROM user u
+JOIN reservation r ON r.user_id = u.user_id
+WHERE r.reservation_time >= DATE_SUB(NOW(), INTERVAL 7 DAY) AND r.status = 'paid'
+GROUP BY u.first_name, u.last_name
+ORDER BY count(r.user_id) DESC
+LIMIT 3;
+---------------------------------------------------------------
 --11)
 SELECT user.first_name, user.last_name
 FROM user
