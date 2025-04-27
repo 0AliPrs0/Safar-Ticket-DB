@@ -68,6 +68,32 @@ GROUP BY u.first_name, u.last_name
 ORDER BY count(r.user_id) DESC
 LIMIT 3;
 ---------------------------------------------------------------
+--9)
+SELECT 
+  c.city_name,
+  COUNT(*) AS sold_tickets
+FROM Reservation r
+JOIN Ticket t ON r.ticket_id = t.ticket_id
+JOIN Travel tr ON t.travel_id = tr.travel_id
+JOIN Terminal tm ON tr.departure_terminal_id = tm.terminal_id
+JOIN City c ON tm.city_id = c.city_id
+WHERE r.status = 'paid' AND c.province_name = 'Tehran'
+GROUP BY c.city_id, c.city_name
+ORDER BY sold_tickets DESC;
+---------------------------------------------------------------
+--10)
+SELECT DISTINCT c.city_name
+FROM User u
+JOIN Reservation r ON r.user_id = u.user_id
+JOIN Ticket t ON r.ticket_id = t.ticket_id
+JOIN Travel tr ON t.travel_id = tr.travel_id
+JOIN Terminal trm ON trm.terminal_id = tr.departure_terminal_id
+JOIN City c ON c.city_id = trm.city_id
+WHERE u.registration_date = (
+    SELECT MIN(registration_date)
+    FROM User
+);
+---------------------------------------------------------------
 --11)
 SELECT user.first_name, user.last_name
 FROM user
