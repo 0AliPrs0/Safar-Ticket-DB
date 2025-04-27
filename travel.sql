@@ -13,3 +13,24 @@ CREATE TABLE Travel (
 	CHECK(price >= 0),
     travel_class ENUM('economy', 'business', 'VIP') NOT NULL
 );
+
+ALTER TABLE Travel
+    DROP COLUMN departure,
+    DROP COLUMN destination;
+
+ALTER TABLE Travel
+    ADD COLUMN departure_terminal_id BIGINT NOT NULL,
+    ADD COLUMN destination_terminal_id BIGINT NOT NULL;
+
+ALTER TABLE Travel
+    ADD CONSTRAINT fk_departure_terminal
+        FOREIGN KEY (departure_terminal_id) REFERENCES Terminal(terminal_id)
+        ON DELETE CASCADE,
+    ADD CONSTRAINT fk_destination_terminal
+        FOREIGN KEY (destination_terminal_id) REFERENCES Terminal(terminal_id)
+        ON DELETE CASCADE;
+
+ALTER TABLE Travel
+    ADD CONSTRAINT fk_travel_company
+        FOREIGN KEY (transport_company_id) REFERENCES TransportCompany(transport_company_id)
+        ON DELETE CASCADE;
