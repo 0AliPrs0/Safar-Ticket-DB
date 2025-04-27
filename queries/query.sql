@@ -1,3 +1,38 @@
+--1)
+SELECT DISTINCT user.first_name, user.last_name
+FROM user
+LEFT JOIN reservation ON user.user_id = reservation.user_id
+WHERE reservation.status != 'paid' OR reservation.user_id IS NULL;
+---------------------------------------------------------------
+--2)
+SELECT DISTINCT user.first_name, user.last_name
+FROM user
+LEFT JOIN reservation ON user.user_id = reservation.user_id
+WHERE reservation.status = 'paid' AND reservation.user_id IS NOT NULL;
+---------------------------------------------------------------
+--3)
+SELECT 
+    u.user_id, 
+    CONCAT(u.first_name, ' ', u.last_name) AS name, 
+    YEAR(p.payment_date) AS year,
+    MONTH(p.payment_date) AS month, 
+    SUM(p.amount) AS total_paid
+FROM user u
+JOIN payment p ON u.user_id = p.user_id
+GROUP BY u.user_id, name, year, month
+ORDER BY year DESC, month DESC, total_paid DESC;
+---------------------------------------------------------------
+--4)
+SELECT DISTINCT CONCAT(u.first_name, ' ', u.last_name) AS name, c.city_name
+FROM User u
+JOIN Reservation r ON u.user_id = r.user_id
+JOIN Ticket t ON r.ticket_id = t.ticket_id
+JOIN Travel tr ON t.travel_id = tr.travel_id
+JOIN City c ON u.city_id = c.city_id
+WHERE r.status = 'paid'
+GROUP BY u.user_id, c.city_id
+HAVING COUNT(r.user_id) = 1;
+---------------------------------------------------------------
 --11)
 SELECT user.first_name, user.last_name
 FROM user
