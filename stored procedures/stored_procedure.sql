@@ -49,6 +49,67 @@ END //
 
 DELIMITER ;
 --------------------------------------------------------------
+--3)
+DELIMITER //
+CREATE PROCEDURE GetTicketsByCity (IN city VARCHAR(255))
+BEGIN
+    SELECT 
+        t.ticket_id,
+        r.reservation_time,
+        c1.city_name AS departure_city,
+        tr.departure_time,
+        c2.city_name AS destination_city,
+        tr.arrival_time,
+        tr.price,
+        tr.transport_type
+    FROM travel tr
+    JOIN terminal trm1 ON trm1.terminal_id = tr.departure_terminal_id
+    JOIN terminal trm2 ON trm2.terminal_id = tr.destination_terminal_id
+    JOIN city c1 ON c1.city_id = trm1.city_id
+    JOIN city c2 ON c2.city_id = trm2.city_id
+    JOIN ticket t ON t.travel_id = tr.travel_id
+    JOIN reservation r ON r.ticket_id = t.ticket_id
+    JOIN user u ON u.user_id = r.user_id
+    JOIN city uc ON uc.city_id = u.city_id
+    WHERE c1.city_name = city
+      AND r.status = 'paid';
+END //
+DELIMITER ;
+--------------------------------------------------------------
+--4)
+DELIMITER //
+
+CREATE PROCEDURE SearchTicketsByKeyword(IN keyword VARCHAR(100))
+BEGIN
+    SELECT 
+        t.ticket_id,
+        CONCAT(u.first_name, ' ', u.last_name) AS passenger_name,
+        c1.city_name AS departure_city,
+		tr.departure_time,
+        c2.city_name AS destination_city,
+        tr.arrival_time,
+		tr.travel_class,
+        tr.price
+    FROM ticket t
+    JOIN reservation r ON r.ticket_id = t.ticket_id
+    JOIN user u ON u.user_id = r.user_id
+    JOIN travel tr ON tr.travel_id = t.travel_id
+    JOIN terminal trm1 ON trm1.terminal_id = tr.departure_terminal_id
+    JOIN terminal trm2 ON trm2.terminal_id = tr.destination_terminal_id
+    JOIN city c1 ON c1.city_id = trm1.city_id
+    JOIN city c2 ON c2.city_id = trm2.city_id
+    WHERE 
+        r.status = 'paid' AND (
+        u.first_name LIKE CONCAT('%', keyword, '%') OR
+        u.last_name LIKE CONCAT('%', keyword, '%') OR
+        c1.city_name LIKE CONCAT('%', keyword, '%') OR
+        c2.city_name LIKE CONCAT('%', keyword, '%') OR
+        tr.travel_class LIKE CONCAT('%', keyword, '%')
+    );
+END //
+
+DELIMITER ;
+--------------------------------------------------------------
 --5)
 DELIMITER //
 CREATE PROCEDURE GetNeighborsByEmailOrPhone (IN user_contact VARCHAR(255))
