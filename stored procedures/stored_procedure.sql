@@ -1,3 +1,54 @@
+--1)
+DELIMITER //
+
+CREATE PROCEDURE `GetTicketsByContact`(IN contact VARCHAR(255))
+BEGIN
+    SELECT 
+        t.ticket_id,
+        r.reservation_time,
+        c1.city_name AS departure_city,
+        tr.departure_time,
+        c2.city_name AS destination_city,
+        tr.arrival_time,
+        tr.price,
+        tr.transport_type
+    FROM travel tr
+    JOIN terminal trm1 ON trm1.terminal_id = tr.departure_terminal_id
+    JOIN terminal trm2 ON trm2.terminal_id = tr.destination_terminal_id
+    JOIN city c1 ON c1.city_id = trm1.city_id
+    JOIN city c2 ON c2.city_id = trm2.city_id
+    JOIN ticket t ON tr.travel_id = t.travel_id
+    JOIN reservation r ON r.ticket_id = t.ticket_id
+    JOIN user u ON u.user_id = r.user_id
+    WHERE (u.email = contact OR u.phone_number = contact)
+      AND r.status = 'paid'
+    ORDER BY r.reservation_time;
+END //
+DELIMITER ;
+--------------------------------------------------------------
+--2)
+DELIMITER //
+
+CREATE PROCEDURE GetUserCanceledReservation(IN contact VARCHAR(255))
+BEGIN
+    DECLARE support_id BIGINT;
+
+    SELECT u.user_id INTO support_id
+    FROM user u
+    WHERE (u.email = contact OR u.phone_number = contact)
+      AND u.user_type = 'SUPPORT'
+    LIMIT 1;
+
+    IF support_id IS NOT NULL THEN
+        SELECT DISTINCT CONCAT(u.first_name, ' ', u.last_name) AS full_name
+        FROM user u
+        JOIN reservation r ON r.user_id = u.user_id
+        WHERE r.status = 'canceled';
+    END IF;
+END //
+
+DELIMITER ;
+--------------------------------------------------------------
 --5)
 DELIMITER //
 CREATE PROCEDURE GetNeighborsByEmailOrPhone (IN user_contact VARCHAR(255))
