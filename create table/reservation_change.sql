@@ -5,7 +5,7 @@ CREATE TABLE ReservationChange (
     prev_status ENUM('reserved', 'paid', 'canceled') NOT NULL,
     next_status ENUM('reserved', 'paid', 'canceled') NOT NULL,
     FOREIGN KEY (reservation_id) REFERENCES Reservation(reservation_id) ON DELETE CASCADE,
-	FOREIGN KEY (support_id) REFERENCES user(user_id) ON DELETE CASCADE
+	FOREIGN KEY (support_id) REFERENCES User(user_id) ON DELETE CASCADE
     );
     
 
