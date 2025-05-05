@@ -2,6 +2,7 @@ INSERT INTO Report (user_id, ticket_id, report_category, report_text, status, re
 VALUES
 (1, 1, 'payment_issue', 'Payment failed unexpectedly.', 'pending', NOW()),
 (2, 2, 'travel_delay', 'Train delayed by 3 hours.', 'reviewed', NOW()),
+(2, 2, 'travel_delay', 'Train delayed by 2 hours.', 'reviewed', NOW()),
 (3, 3, 'unexpected_cancellation', 'My ticket was canceled without notice.', 'pending', NOW()),
 (4, 4, 'other', 'Seats were not comfortable.', 'reviewed', NOW()),
 (5, 5, 'payment_issue', 'Charged twice for the same ticket.', 'pending', NOW()),
