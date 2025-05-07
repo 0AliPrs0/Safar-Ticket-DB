@@ -1,8 +1,18 @@
-# Safar Ticket DB
+# ✈️ Safar Ticket DB
 
+## 🌟 Overview
 This project implements a **relational database system** for managing Safar Ticket reservations, including transportation by **bus, train, and airplane**. It includes a complete **3NF-compliant schema**, data population, **informational and analytical queries**, and several **stored procedures**.
 
 ---
+
+## 📖 Table of Contents 
+- [📁 Project Structure](#-project_structure)  
+- [📊 Tables](#-tables)  
+- [📊 Queries](#️-queries)  
+- [⚙️ Stored Procedures](#-stored_procedures) 
+- [🧪 Sample Data](#-sample_data) 
+- [✅ Design Notes](#-design_notes) 
+- [📌 Future Improvements](#-future_improvments) 
 
 ## 📁 Project Structure
 
@@ -13,9 +23,9 @@ This project implements a **relational database system** for managing Safar Tick
 
 ---
 
-## 🗂️ Tables
+## 📊 Tables
 
-### 1. `User`
+### 1. 👤 `User`
 Stores information about the system users.
 
 | Column         | Type         | Constraints               |
@@ -32,7 +42,7 @@ Stores information about the system users.
 
 ---
 
-### 2. `City`
+### 2. 🏙️ `City`
 Stores information about cities used as origins or destinations in travels.
 
 | Column       | Type          | Constraints                 |
@@ -44,7 +54,7 @@ Stores information about cities used as origins or destinations in travels.
 
 ---
 
-### 3. `Travel`
+### 3. 🗺️ `Travel`
 Defines a route from one city to another.
 
 | Column               | Type        | Constraints                 |
@@ -63,7 +73,7 @@ Defines a route from one city to another.
 
 ---
 
-### 4. `Ticket`
+### 4. 🎫 `Ticket`
 Tickets booked by users.
 
 | Column        | Type          | Constraints                         |
@@ -76,7 +86,7 @@ Tickets booked by users.
 
 ---
 
-### 5. `Reservation`
+### 5. 🕒 `Reservation`
 Stores reservation records, linking users to purchased tickets along with booking details.
 
 | Column               | Type               | Constraints                      |
@@ -90,7 +100,7 @@ Stores reservation records, linking users to purchased tickets along with bookin
 
 ---
 
-### 6. `Terminal`
+### 6. 🏫 `Terminal`
 Contains information about terminals used as departure or arrival points for trips.
 
 | Column        | Type         | Constraints                 |
@@ -102,7 +112,7 @@ Contains information about terminals used as departure or arrival points for tri
 
 ---
 
-### 7. `Payment`
+### 7. 💰 `Payment`
 Contains details of user payments made for reservations.
 
 | Column         | Type     | Constraints                 |
@@ -116,7 +126,7 @@ Contains details of user payments made for reservations.
 
 ---
 
-### 8. `Report`
+### 8. 📝 `Report`
 Contains user-submitted reports related to tickets, trips, or services.
 
 | Column          | Type     | Constraints                 |
@@ -131,7 +141,7 @@ Contains user-submitted reports related to tickets, trips, or services.
 
 ---
 
-### 9. `TransportCompany`
+### 9. 🏢 `TransportCompany`
 Contains information about transport companies offering travel services.
 
 | Column               | Type         | Constraints                 |
@@ -142,7 +152,7 @@ Contains information about transport companies offering travel services.
 
 ---
 
-### 10. `Vehicle_detail`
+### 10. 🚉 `Vehicle_detail`
 Stores basic information about each vehicle, including its unique ID and type (train, flight, or bus).
 
 | Column       | Type         | Constraints                 |
